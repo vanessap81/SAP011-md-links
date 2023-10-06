@@ -1,5 +1,6 @@
 {
   "name": "md-links",
+  "author": "Vanessa Ponte",
   "version": "0.1.0",
   "engines": {
     "node": ">=16.x"
@@ -23,5 +24,11 @@
     "lint": "npx eslint .",
     "build": "babel src -d lib",
     "test": "jest"
+  },
+  "bin": {
+    "md-links": "cli.js"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
   }
 }
