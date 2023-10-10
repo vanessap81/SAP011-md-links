@@ -10,9 +10,10 @@ const mdLinks = (filePath) => {
       if (err) {
         reject(err.message);
       } else {
+        
         const regex = data.match(urlRegex);
         regex.forEach((index) => {
-          const title = index.match(/\[(\S.*)\]/)[1];
+          const title = index.match(/\[([^[\]]*?)\]/)[1];
           const href = index.match(/\((http.*)\)/)[1];
           results.push({ title, href });
         });
