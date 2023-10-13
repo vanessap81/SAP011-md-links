@@ -11,7 +11,6 @@ const mdLinks = (filePath) => {
         reject(err.message);
       } else {
         const regexFilter = data.match(urlRegex);
-
         const results = regexFilter.map((link) => {
           const title = link.match(/\[([^[\]]*?)\]/)[1];
           const href = link.match(/\((http.*)\)/)[1];

@@ -1,26 +1,43 @@
+import chalk from "chalk";
 // verificar os tipos de erros com o fetch
 // criar constantes com tipos de status
 // criar função que receba o código do status e retorne uma mensagem
 
 const gitHub = {
-  text: "PROFILE",
-  href: "https://github.com/vanessap81",
+  title: "Profile Vanessa",
+  href: "https://github.com/vanessap91",
 };
 
-function getStatus(link) {
+const validate = (link) => {
   return fetch(link.href)
     .then((response) => {
-      link.status = response.status;
-      link.statusText = response.statusText;
-      console.log(link);
+      const linkData = {
+        title: link.title,
+        href: link.href,
+        status: response.status,
+        statusText: response.statusText,
+      };
+      console.log(
+        chalk.bold.bgYellow(linkData.title),
+        chalk.blueBright(linkData.href),
+        chalk.gray(linkData.status),
+        chalk.green(linkData.statusText)
+      );
+      // return linkData;
     })
     .catch((error) => {
-      link.status = error.code || "FAIL";
-      link.statusText = error.message;
-      return link;
+      const linkData = {
+        status: error.code,
+        statusText: error.message,
+      };
+      console.log(chalk.bold.bgRed(linkData.statusText));
+      return linkData;
     });
-}
+};
 
-getStatus(gitHub);
+validate(gitHub);
 
-// export { getStatus };
+// console.log(validate(gitHub));
+// resposta: Promise { <pending> }
+
+// export { validate };

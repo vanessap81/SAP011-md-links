@@ -2,6 +2,7 @@
 
 import chalk from "chalk";
 import { mdLinks } from "./src/md-links.js";
+// import { validate } from "./src/validate-links.js";
 
 // o segundo argumento digitado será capturado para análise
 const file = process.argv[2];
@@ -15,26 +16,44 @@ const option = {
   stats: process.argv.includes("--stats"),
 };
 
-mdLinks(file, option).then((results) => {
-  if (file && !option) {
+mdLinks(file).then((results) => {
+  if (!process.argv[3]) {
     results.forEach((result) => {
       console.log(
         chalk.bold.bgYellow(result.title),
         result.href,
-        chalk.bgBlue("Arquivo: "),
+        chalk.bgBlue("Arquivo:"),
         result.file
       );
     });
   } else if (option.validate) {
-    results.forEach((result) => {
-      console.log(
-        chalk.bold.bgYellow(result.title),
-        result.href,
-        chalk.bgBlue("Arquivo: "),
-        result.file
-      );
+    results.forEach((link) => {
+      return fetch(link.href)
+        .then((response) => {
+          const linkData = {
+            title: link.title,
+            href: link.href,
+            status: response.status,
+            statusText: response.statusText,
+          };
+          console.log(
+            chalk.bold.bgYellow(linkData.title),
+            linkData.href,
+            chalk.gray(linkData.status),
+            chalk.bgBlue("Status:"),
+            chalk.green(linkData.statusText)
+          );
+          // return linkData;
+        })
+        .catch((error) => {
+          const linkData = {
+            status: error.code,
+            statusText: error.message,
+          };
+          console.log(chalk.bold.bgRed(linkData.statusText));
+          return linkData;
+        });
     });
-    console.log("There is a validate request");
   } else if (option.stats) {
     results.forEach((result) => {
       console.log(
