@@ -1,37 +1,40 @@
 import { mdLinks } from "./md-links";
 
 // verificar os tipos de erros com o fetch
-// criar constantes com tipos de status: ok ou fail
-// criar função que receba o código do status e retorne uma mensagem: ok ou fail
+// criar constantes com tipos de status
+// criar função que receba o código do status e retorne uma mensagem
 
-// ESTE CÓDIGO ESTÁ NA CLI.JS FUNCIONANDO
 mdLinks(file).then((results) => {
   results.forEach((link) => {
     fetch(link.href)
       .then((response) => {
-        const linkData = {
+        const statsData = {
           title: link.title,
           href: link.href,
           file: file,
           status: response.status,
           statusText: response.statusText,
         };
+        // for para saber quantos ok e quantos fail
+
+        // .then( PODE POR IF AQUI DENTRO?)
+
         console.log(
-          chalk.bold.bgYellow(linkData.file),
-          linkData.href,
-          chalk.bold.green(linkData.statusText),
-          chalk.green(linkData.status),
-          chalk.blue(linkData.title)
+          chalk.bold.bgYellow(statsData.file),
+          stasData.href,
+          chalk.bold.green(statsData.statusText),
+          chalk.green(statsData.status),
+          chalk.blue(statsData.title)
         );
-        // return linkData;
+
+        // console.log(total: , Unique: );
       })
       .catch((error) => {
         const linkData = {
           status: error.code,
           statusText: error.message,
         };
-        console.log(chalk.bold.bgRed(linkData.statusText));
-        return linkData;
+        console.log(linkData);
       });
   });
 });

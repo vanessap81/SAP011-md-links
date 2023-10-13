@@ -20,28 +20,28 @@ mdLinks(file).then((results) => {
   if (!process.argv[3]) {
     results.forEach((result) => {
       console.log(
-        chalk.bold.bgYellow(result.title),
+        chalk.bold.bgYellow(result.file),
         result.href,
-        chalk.bgBlue("Arquivo:"),
-        result.file
+        chalk.yellow(result.title)
       );
     });
   } else if (option.validate) {
     results.forEach((link) => {
-      return fetch(link.href)
+      fetch(link.href)
         .then((response) => {
           const linkData = {
             title: link.title,
             href: link.href,
+            file: file,
             status: response.status,
             statusText: response.statusText,
           };
           console.log(
-            chalk.bold.bgYellow(linkData.title),
+            chalk.bold.bgYellow(linkData.file),
             linkData.href,
-            chalk.gray(linkData.status),
-            chalk.bgBlue("Status:"),
-            chalk.green(linkData.statusText)
+            chalk.bold.green(linkData.statusText),
+            chalk.green(linkData.status),
+            chalk.blue(linkData.title)
           );
           // return linkData;
         })
@@ -57,10 +57,9 @@ mdLinks(file).then((results) => {
   } else if (option.stats) {
     results.forEach((result) => {
       console.log(
-        chalk.bold.bgYellow(result.title),
+        chalk.bold.bgYellow(result.file),
         result.href,
-        chalk.bgBlue("Arquivo: "),
-        result.file
+        chalk.yellow(result.title)
       );
     });
     console.log("There is a stats request");
