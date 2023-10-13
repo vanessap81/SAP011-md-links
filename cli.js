@@ -18,7 +18,7 @@ const option = {
 
 // Possibilidade: criar função que comece do If... else (condição: existencia de options) para selecionar a função stats ou validate
 
-mdLinks(file).then((results) => {
+mdLinks(file, option).then((results) => {
   if (!process.argv[3]) {
     results.forEach((result) => {
       console.log(
@@ -29,32 +29,13 @@ mdLinks(file).then((results) => {
     });
   } else if (option.validate) {
     results.forEach((link) => {
-      fetch(link.href)
-        .then((response) => {
-          const linkData = {
-            title: link.title,
-            href: link.href,
-            file: file,
-            status: response.status,
-            statusText: response.statusText,
-          };
-          console.log(
-            chalk.bold.bgYellow(linkData.file),
-            linkData.href,
-            chalk.bold.green(linkData.statusText),
-            chalk.green(linkData.status),
-            chalk.blue(linkData.title)
-          );
-          // return linkData;
-        })
-        .catch((error) => {
-          const linkData = {
-            status: error.code,
-            statusText: error.message,
-          };
-          console.log(chalk.bold.bgRed(linkData.statusText));
-          return linkData;
-        });
+      console.log(
+        chalk.bold.bgYellow(link.file),
+        link.href,
+        chalk.bold.green(link.statusText),
+        chalk.green(link.status),
+        chalk.blue(link.title)
+      );
     });
   } else if (option.stats) {
     results.forEach((result) => {
