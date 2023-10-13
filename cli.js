@@ -16,6 +16,8 @@ const option = {
   stats: process.argv.includes("--stats"),
 };
 
+// Possibilidade: criar função que comece do If... else (condição: existencia de options) para selecionar a função stats ou validate
+
 mdLinks(file).then((results) => {
   if (!process.argv[3]) {
     results.forEach((result) => {

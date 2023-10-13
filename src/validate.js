@@ -5,7 +5,11 @@ import { mdLinks } from "./md-links";
 // criar função que receba o código do status e retorne uma mensagem: ok ou fail
 
 // ESTE CÓDIGO ESTÁ NA CLI.JS FUNCIONANDO
+
+// para exportar, criar uma função e atribuir a uma const
+
 mdLinks(file).then((results) => {
+  // criar uma nova poromessa?
   results.forEach((link) => {
     fetch(link.href)
       .then((response) => {
