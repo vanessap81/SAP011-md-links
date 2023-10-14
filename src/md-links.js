@@ -1,13 +1,13 @@
 import { error } from "console";
-import { readFile } from "fs";
+import { readFile } from 'fs';
 import validateLinks from "./validate.js";
-// import { getStatus } from "./validate-links.js";
+import stats from "./stats.js";
 
 const mdLinks = (filePath, option) => {
   const urlRegex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
 
   return new Promise((resolve, reject) => {
-    readFile(filePath, "utf8", (err, data) => {
+    readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         reject(err.message);
       } else {
@@ -24,14 +24,14 @@ const mdLinks = (filePath, option) => {
 
         if (option.validate) {
           resolve(validateLinks(results));
+        } if (option.stats) {
+          resolve(stats(results));
         } else {
           resolve(results);
         }
       }
     });
   });
-
-  // validação aqui?
 };
 
 export { mdLinks };
