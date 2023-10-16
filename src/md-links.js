@@ -2,6 +2,8 @@ import { error } from "console";
 import { readFile } from 'fs';
 import validateLinks from "./validate.js";
 
+// const fileExtension = file.extname();
+
 const mdLinks = (filePath, option = {}) => {
   const urlRegex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
 
@@ -25,17 +27,20 @@ const mdLinks = (filePath, option = {}) => {
         } else if (option.stats && !option.validate) {
           validateLinks(results)
             .then((result) => {
+              const unique = [...new Set(result.map((link) => link.href))];
               const stats = {
                 total: result.length,
-                // UNIQUE
+                unique: unique.length,
               };
               resolve(stats);
             });
         } else if (option.validate && option.stats) {
           validateLinks(results)
             .then((result) => {
+              const unique = [...new Set(result.map((link) => link.href))];
               const stats = {
                 total: result.length,
+                unique: unique.length,
                 broken: result.filter((link) => link.status !== 200).length,
               };
               resolve(stats);

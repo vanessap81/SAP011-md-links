@@ -12,8 +12,6 @@ const option = {
   stats: process.argv.includes('--stats'),
   statsAndValidade: process.argv.includes('--stats', '--validate'),
 };
-// console.log(option);
-// const fileExtension = file.extname();
 
 mdLinks(file, option)
   .then((results) => {
@@ -37,10 +35,21 @@ mdLinks(file, option)
       });
     } else if (option.stats && !option.validate) {
       // console.log(results);
-      console.log(chalk.black.bgGreen('Total:'), chalk.green(results.total));
+      console.log(
+        chalk.black.green('TOTAL:'), 
+        chalk.green(results.total,'\n'),
+        chalk.blue('Unique:'), 
+        chalk.blue(results.unique)
+      );
     } else if (option.statsAndValidade) {
-      // console.log(results);
-      console.log(chalk.black.bgGreen('Total:'), chalk.green(results.total), chalk.black.bgGreen('Broken:'), chalk.green(results.broken));
+      console.log(
+        chalk.green('TOTAL:'), 
+        chalk.green(results.total,'\n'), 
+        chalk.blue('Unique:'), 
+        chalk.blue(results.unique,'\n'), 
+        chalk.red('Broken:'), 
+        chalk.red(results.broken)
+      );
     } else {
       console.log('Comando inválido');
     }
