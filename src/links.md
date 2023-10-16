@@ -13,5 +13,5 @@
 
     <details><summary>Links</summary><p>
 
-  - [Objetos em JavaScript](https://github.com/vanessap91)
+  - [Github Vanessa](https://github.com/vanessap91)
   </p></details>
