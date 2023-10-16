@@ -1,31 +1,35 @@
-const stats = (results) =>
+const validateForStats = (results) =>
   Promise.all(
     results.map((link) =>
       fetch(link.href)
         .then((response) => {
-          // const hrefList = [];
-          hrefList.push(response.statusText);
-
-          if (response.statusText !== 'OK') {
-            broken++;
+          const linkInfo = {
+            link: link.href,
+            statusText: response.statusText,
+            status: response.status
           };
-
-          const resultStats = {
-            total: hrefList.length,
-            broken: broken,
-          };
-
-          return resultStats;
+          return linkInfo;
         })
         .catch((error) => {
-          const linkData = {
+          const linkInfo = {
             status: error.code,
             statusText: error.message,
           };
-          return linkData;
+          return linkInfo;
         })
   ));
 
+function stats(arrayOfLinks) { 
+  const total = arrayOfLinks.length;
+  let broken = 0;
 
+  arrayOfLinks.forEach((link) => {
+    if (link.status !== 200) {
+      broken++;
+    }
+  });
 
-export default stats;
+  return { total, broken };
+};
+
+export { stats, validateForStats };

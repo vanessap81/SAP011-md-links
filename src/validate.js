@@ -22,6 +22,4 @@ const validateLinks = (results) =>
     )
   );
 
-
-
 export default validateLinks;

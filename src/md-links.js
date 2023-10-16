@@ -1,9 +1,8 @@
 import { error } from "console";
 import { readFile } from 'fs';
 import validateLinks from "./validate.js";
-import stats from "./stats.js";
 
-const mdLinks = (filePath, option) => {
+const mdLinks = (filePath, option = {}) => {
   const urlRegex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
 
   return new Promise((resolve, reject) => {
@@ -21,11 +20,26 @@ const mdLinks = (filePath, option) => {
             file: filePath,
           };
         });
-
-        if (option.validate) {
+        if (option.validate && !option.stats) {
           resolve(validateLinks(results));
-        } if (option.stats) {
-          resolve(stats(results));
+        } else if (option.stats && !option.validate) {
+          validateLinks(results)
+            .then((result) => {
+              const stats = {
+                total: result.length,
+                // UNIQUE
+              };
+              resolve(stats);
+            });
+        } else if (option.validate && option.stats) {
+          validateLinks(results)
+            .then((result) => {
+              const stats = {
+                total: result.length,
+                broken: result.filter((link) => link.status !== 200).length,
+              };
+              resolve(stats);
+            });
         } else {
           resolve(results);
         }
