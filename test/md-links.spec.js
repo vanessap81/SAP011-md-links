@@ -1,4 +1,4 @@
-const mdLinks = require('../');
+import { jest } from '@jest/globals';
 
 
 describe('mdLinks', () => {
