@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 import chalk from 'chalk';
-import { mdLinks } from './src/md-links.js';
+import { mdLinks } from './lib/md-links.js';
 
 const file = process.argv[2];
 // console.log(process.argv[1]); C:\Users\vanes\AppData\Roaming\npm\node_modules\md-links\cli.js
@@ -34,7 +34,6 @@ mdLinks(file, option)
         );
       });
     } else if (option.stats && !option.validate) {
-      // console.log(results);
       console.log(
         chalk.black.green('TOTAL:'), 
         chalk.green(results.total,'\n'),

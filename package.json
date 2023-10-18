@@ -24,7 +24,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "build": "babel src -d lib",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "bin": {
     "md-links": "cli.js"
