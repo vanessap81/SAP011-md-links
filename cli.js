@@ -52,4 +52,9 @@ mdLinks(file, option)
     } else {
       console.log('Comando inválido');
     }
-})
+  })
+  .catch((Error) => {
+    console.log(chalk.bold.bgRed(Error.message));
+  })
+
+
