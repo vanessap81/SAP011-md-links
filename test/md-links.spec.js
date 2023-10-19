@@ -1,9 +1,8 @@
 import { jest } from '@jest/globals';
-// import { mdLinks } from '../src/md-links.js';
 import validateLinks from '../lib/validate.js';
 import { statsAndValidate, statsFunction } from '../lib/stats.js';
-
-
+import { mdLinks } from '../lib/md-links.js';
+// import { readFile } from 'fs/promises';
 
 const arrayDeLinks = [
   {
@@ -18,9 +17,6 @@ describe('validateLinks', () => {
     const runValidate = validateLinks(arrayDeLinks);
     expect(runValidate instanceof Promise).toBe(true);
   });
-});
-
-describe('validateLinks', () => {
   it('deve trazer status code e status text do link', async () => {
     const fetch = jest.spyOn(global, 'fetch').mockImplementation();
     const property = {
@@ -42,25 +38,6 @@ describe('validateLinks', () => {
     });
   }
   );
-
-  // it('deve acusar erro com o catch', async () => {
-  //   expect.assertions(1);
-  //   const arrayDeLinks2 = [
-  //     {
-  //       title: 'Arranjos',
-  //       href: ' ',
-  //       file: './files/links.md'
-  //     },
-  //   ];
-
-  //   const resultadoError = {
-  //     error
-  //   };
-
-  //   return validateLinks(arrayDeLinks2).catch(e => {
-  //     expect(e).toEqual(resultadoError);
-  //   })
-  // })
 });
 
 describe('statsAndValidate', () => {
@@ -121,3 +98,74 @@ describe('statsFunction', () => {
     expect(stats).toEqual(resultadoStats2);
   });
 });
+
+describe('md-links', () => {
+  it('deve retornar uma Promise', () => {
+    const runMdLinks = mdLinks('./files/links.md');
+    expect(runMdLinks instanceof Promise).toBe(true);
+  });
+  it('deve resolver uma Promisse entregando um array de objetos texto, href e file', async () => {
+    const resultadoMdLinks = [
+      {
+        title: 'Github Broken',
+        href: 'https://github.com/vanessap91',
+        file: './files/linksTest.md',
+      },
+      {
+        title: 'Github Vanessa',
+        href: 'https://github.com/vanessap81',
+        file: './files/linksTest.md',
+      },
+      {
+        title: 'Youtube',
+        href: 'https://youtube.com',
+        file: './files/linksTest.md',
+      }
+    ];
+    mdLinks('./files/linksTest.md').then((result) => {
+      expect(result).toEqual(resultadoMdLinks);
+    })
+  });
+});
+
+// describe('readFile', () => {
+//   it('deve retornar uma Promise', () => {
+//     const runReadFile = readFile('./files/links.md');
+//     expect(runReadFile instanceof Promise).toBe(true);
+//   });
+//   it('deve disparar um erro caso o arquivo não seja .md', () => {
+//     expect(readFile('./files/links.txt')).rejects.toEqual(err.message);
+//   })
+// });
+
+// describe('md-links', () => {
+//   it('deve resolver uma Promisse entregando um array de objetos com links validados', async () => {
+//     const resultadoMdLinks2 = [
+//       {
+//         title: 'Github Broken',
+//         href: 'https://github.com/vanessap91',
+//         file: './files/linksTest.md',
+//         status: 404,
+//         statusText: 'Not Found',
+//       },
+//       {
+//         title: 'Github Vanessa',
+//         href: 'https://github.com/vanessap81',
+//         file: './files/linksTest.md',
+//         status: 200,
+//         statusText: 'OK',
+//       },
+//       {
+//         title: 'Youtube',
+//         href: 'https://youtube.com',
+//         file: './files/linksTest.md',
+//         status: 200,
+//         statusText: 'OK',
+//       }
+//     ];
+
+//     mdLinks('./files/linksTest.md', '--validate').then((result) => {
+//       expect(result).toEqual(resultadoMdLinks2);
+//     })
+//   });
+// });
