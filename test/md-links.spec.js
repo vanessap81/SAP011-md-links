@@ -2,13 +2,14 @@ import { jest } from '@jest/globals';
 import validateLinks from '../lib/validate.js';
 import { statsAndValidate, statsFunction } from '../lib/stats.js';
 import { mdLinks } from '../lib/md-links.js';
+import { link } from 'fs';
 // import { readFile } from 'fs/promises';
 
 const arrayDeLinks = [
   {
     title: 'Arranjos',
     href: 'https://curriculum.laboratoria.la/pt/topics/javascript/04-arrays',
-    file: './files/links.md'
+    file: './files/links.md',
   },
 ];
 
@@ -38,6 +39,18 @@ describe('validateLinks', () => {
     });
   }
   );
+  // NÃO PASSA
+  it('deve permitir que o erro seja segurado pelo catch', async () => {
+    const arraySemFile = [
+      {
+        title: 'Github Vanessa',
+        href: 'https://github.com/vanessap81',
+      },
+    ];
+
+    return validateLinks(arraySemFile).catch((e) => 
+      expect(e).toEqual(e.message))
+  })
 });
 
 describe('statsAndValidate', () => {
@@ -104,6 +117,13 @@ describe('md-links', () => {
     const runMdLinks = mdLinks('./files/links.md');
     expect(runMdLinks instanceof Promise).toBe(true);
   });
+
+  it('deve disparar um erro caso o arquivo não seja .md', () => {
+    const runMdLinks2 = mdLinks('./files/links.txt');
+    const errorMsg = new Error('A extensão do arquivo não é .md ');
+    expect(runMdLinks2).rejects.toEqual(errorMsg);
+  })
+    
   it('deve resolver uma Promisse entregando um array de objetos texto, href e file', async () => {
     const resultadoMdLinks = [
       {
@@ -133,8 +153,6 @@ describe('md-links', () => {
 //     const runReadFile = readFile('./files/links.md');
 //     expect(runReadFile instanceof Promise).toBe(true);
 //   });
-//   it('deve disparar um erro caso o arquivo não seja .md', () => {
-//     expect(readFile('./files/links.txt')).rejects.toEqual(err.message);
 //   })
 // });
 
