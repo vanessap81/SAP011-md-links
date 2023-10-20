@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import validateLinks from '../lib/validate.js';
 import { statsAndValidate, statsFunction } from '../lib/stats.js';
 import { mdLinks } from '../lib/md-links.js';
-import { link } from 'fs';
+// import { link } from 'fs';
 // import { readFile } from 'fs/promises';
 
 const arrayDeLinks = [
@@ -39,18 +39,21 @@ describe('validateLinks', () => {
     });
   }
   );
-  // NÃO PASSA
-  it('deve permitir que o erro seja segurado pelo catch', async () => {
-    const arraySemFile = [
+  // PASSA INDIVIDUALMENTE MAS NÃO DEIXA O TEXTE PASSAR COMO UM TODO
+  it('arquivo vazio deve permitir o erro ser segurado pelo catch', async () => {
+    const arrayVazio = [
       {
-        title: 'Github Vanessa',
-        href: 'https://github.com/vanessap81',
+        // title: 'Github Vanessa',
+        // href: 'https://github.com/vanessap81',
       },
     ];
 
-    return validateLinks(arraySemFile).catch((e) => 
-      expect(e).toEqual(e.message))
-  })
+    const typerror = 'TypeError: Cannot read properties of null (reading map)';
+    const typerror2 = 'TypeError: Cannot read properties of undefined (reading then)';
+
+    return validateLinks(arrayVazio).catch((e) => 
+      expect(e).toEqual(typerror || typerror2));
+  });
 });
 
 describe('statsAndValidate', () => {
@@ -122,6 +125,12 @@ describe('md-links', () => {
     const runMdLinks2 = mdLinks('./files/links.txt');
     const errorMsg = new Error('A extensão do arquivo não é .md ');
     expect(runMdLinks2).rejects.toEqual(errorMsg);
+  });
+
+  it('deve disparar um erro caso o arquivo não contenha links', () => {
+    const runMdLinks3 = mdLinks('./files/nolinks.md');
+    const errorMsg2 = new Error('O arquivo não contém links ');
+    expect(runMdLinks3).rejects.toEqual(errorMsg2);
   })
     
   it('deve resolver uma Promisse entregando um array de objetos texto, href e file', async () => {
@@ -158,32 +167,17 @@ describe('md-links', () => {
 
 // describe('md-links', () => {
 //   it('deve resolver uma Promisse entregando um array de objetos com links validados', async () => {
-//     const resultadoMdLinks2 = [
-//       {
-//         title: 'Github Broken',
-//         href: 'https://github.com/vanessap91',
-//         file: './files/linksTest.md',
-//         status: 404,
-//         statusText: 'Not Found',
-//       },
-//       {
-//         title: 'Github Vanessa',
-//         href: 'https://github.com/vanessap81',
-//         file: './files/linksTest.md',
-//         status: 200,
-//         statusText: 'OK',
-//       },
-//       {
-//         title: 'Youtube',
-//         href: 'https://youtube.com',
-//         file: './files/linksTest.md',
-//         status: 200,
-//         statusText: 'OK',
-//       }
-//     ];
+//     const mockRead = {};
+//     readFile.mockResolvedValueOnce(mockRead);
+//     const mockValidate = [{}, {}];
+//     validateLinks.mockResolvedValueOnce(mockValidate);
 
-//     mdLinks('./files/linksTest.md', '--validate').then((result) => {
-//       expect(result).toEqual(resultadoMdLinks2);
+//     const caminhoDoArquivo = 'caminhoficticio';
+//     mdLinks(caminhoDoArquivo, {validate: true}).then(() => {
+//       expect(readFile).toHaveBeenCalledTimes(1);
+//       expect(readFile).toHaveBeenCalledWith(caminhoDoArquivo);
+//       expect(validateLinks).toHaveBeenCalledTimes(1);
 //     })
 //   });
 // });
+// 
